@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Atelier 4 : Formulaire HTML</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 60%;
+            margin-bottom: 15px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .buttons {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Atelier 4 : Formulaire HTML</h2>
+
+    <form action="module.php" method="POST">
+        <table>
+            <thead>
+                <tr>
+                    <th>Champ</th>
+                    <th>Type de champ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Prénom -->
+                <tr>
+                    <td><label for="prenom">Prénom</label></td>
+                    <td><input type="text" id="prenom" name="prenom" required></td>
+                </tr>
+                <!-- Nom -->
+                <tr>
+                    <td><label for="nom">Nom</label></td>
+                    <td><input type="text" id="nom" name="nom" required></td>
+                </tr>
+                <!-- Date de naissance -->
+                <tr>
+                    <td><label for="date_naissance">Date de naissance</label></td>
+                    <td><input type="date" id="date_naissance" name="date_naissance" required></td>
+                </tr>
+                <!-- Sexe -->
+                <tr>
+                    <td>Sexe</td>
+                    <td>
+                        <input type="radio" id="homme" name="sexe" value="HOMME" required>
+                        <label for="homme">HOMME</label>
+                        <input type="radio" id="femme" name="sexe" value="FEMME" required>
+                        <label for="femme">FEMME</label>
+                    </td>
+                </tr>
+                <!-- Adresse -->
+                <tr>
+                    <td><label for="adresse">Adresse</label></td>
+                    <td><textarea id="adresse" name="adresse" rows="4" cols="30"></textarea></td>
+                </tr>
+                <!-- Téléphone -->
+                <tr>
+                    <td><label for="telephone">Téléphone</label></td>
+                    <td>
+                        <!-- Type tel avec pattern pour forcer 12 chiffres en plus du +221 si nécessaire, ou simple validation -->
+                        <input type="tel" id="telephone" name="telephone" value="+221" pattern="^\+221[0-9]{12}$" title="Doit commencer par +221 suivi de 12 chiffres">
+                    </td>
+                </tr>
+                <!-- Nationalité -->
+                <tr>
+                    <td><label for="nationalite">Nationalité</label></td>
+                    <td>
+                        <select id="nationalite" name="nationalite" required>
+                            <option value="SENEGALAISE">SENEGALAISE</option>
+                            <option value="MALIENNE" selected>MALIENNE</option>
+                            <option value="GABONAISE">GABONAISE</option>
+                        </select>
+                    </td>
+                </tr>
+                <!-- Email -->
+                <tr>
+                    <td><label for="email">Email</label></td>
+                    <td><input type="email" id="email" name="email" required></td>
+                </tr>
+                <!-- Mot de passe -->
+                <tr>
+                    <td><label for="mot_de_pass">Mot de passe</label></td>
+                    <td><input type="password" id="mot_de_pass" name="mot_de_pass" maxlength="10" required></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Boutons VALIDER et EFFACER -->
+        <div class="buttons">
+            <input type="submit" value="VALIDER">
+            <input type="reset" value="EFFACER">
+        </div>
+    </form>
+
+</body>
+</html>
