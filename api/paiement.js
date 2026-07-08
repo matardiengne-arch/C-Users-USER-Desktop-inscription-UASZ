@@ -37,8 +37,9 @@ export default async function handler(req, res) {
       // On renvoie le lien de paiement PayTech vers le HTML
       return res.status(200).json({ redirect_url: result.redirect_url });
     } else {
-      return res.status(400).json({ error: result.errors?.[0] || "Erreur PayTech" });
-    }
+  // Ceci affichera la vraie raison renvoyée par PayTech dans votre alerte
+  return res.status(400).json({ error: JSON.stringify(result) });
+}
   } catch (error) {
     return res.status(500).json({ error: "Erreur de connexion au serveur" });
   }
