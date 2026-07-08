@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     currency: "XOF",
     ref_command: `UASZ-${Date.now()}`, // Génère un numéro de commande unique
     command_name: "Paiement inscription Amicale",
-    env: "test", // Mettez "live" pour de vrais paiements ou "test" pour essayer
+    env: "prod", // Mettez "live" pour de vrais paiements ou "test" pour essayer
     success_url: `https://${req.headers.host}/index.html?status=success`,
     cancel_url: `https://${req.headers.host}/index.html?status=cancel`
   };
