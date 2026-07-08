@@ -162,6 +162,44 @@
         
     </form>
 </div>
+<script>
+  document.getElementById('form-inscription').addEventListener('submit', async function(e) {
+    e.preventDefault(); // Empêche le rechargement immédiat de la page
+    
+    const btn = e.target.querySelector('button');
+    const originalText = btn.innerText;
+    btn.innerText = "Redirection vers PayTech...";
+    btn.disabled = true;
 
+    // Récupération des données du formulaire
+    const formData = {
+      prenom: document.getElementById('prenom').value, // Vérifiez que vos <input> ont bien ces ID
+      nom: document.getElementById('nom').value
+    };
+
+    try {
+      const response = await fetch('/api/paiement', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (data.redirect_url) {
+        // Redirige l'étudiant directement sur PayTech (Wave, Orange Money...)
+        window.location.href = data.redirect_url;
+      } else {
+        alert("Erreur : " + data.error);
+        btn.innerText = originalText;
+        btn.disabled = false;
+      }
+    } catch (error) {
+      alert("Impossible de joindre le service de paiement.");
+      btn.innerText = originalText;
+      btn.disabled = false;
+    }
+  });
+</script>
 </body>
 </html>
