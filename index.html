@@ -82,7 +82,7 @@
         }
         .wave-btn {
             display: inline-block;
-            background-color: #1ac6ff; /* Couleur officielle de Wave */
+            background-color: #1ac6ff;
             color: white;
             text-decoration: none;
             padding: 12px 20px;
@@ -116,10 +116,10 @@
 <body>
 
 <div class="form-container">
-    <h1>intégration au sein de l'amicale</h1>
+    <h1>Intégration au sein de l'amicale</h1>
     <p class="subtitle">Formulaire d'inscription des nouveaux bacheliers orientés à l'UASZ</p>
 
-    <form id="form-inscription" method="POST">
+    <form id="form-inscription">
         
         <div class="form-group">
             <label for="prenom">Prénom <span class="required">*</span></label>
@@ -132,72 +132,72 @@
         </div>
 
         <div class="form-group">
-            <label for="date_naissance">Date de naissance<span class="required">*</span></label>
-            <input type="date" id="date_naissance" name="date_naissance">
+            <label for="date_naissance">Date de naissance <span class="required">*</span></label>
+            <input type="date" id="date_naissance" name="date_naissance" required>
         </div>
 
         <div class="form-group">
-            <label for="telephone">Numéro de téléphone<span class="required">*</span></label>
+            <label for="telephone">Numéro de téléphone WhatsApp <span class="required">*</span></label>
             <div class="phone-input-container">
                 <span class="prefix">+221</span>
-                <input type="tel" id="telephone" name="telephone" placeholder="77XXXXXXX" pattern="[0-9]{9}" maxlength="9">
+                <input type="tel" id="telephone" name="telephone" placeholder="77XXXXXXX" pattern="[0-9]{9}" maxlength="9" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="residence">Résidence<span class="required">*</span></label>
-            <input type="text" id="residence" name="residence" placeholder="Ex: Cap skirring">
+            <label for="residence">Résidence <span class="required">*</span></label>
+            <input type="text" id="residence" name="residence" placeholder="Ex: Cap skirring" required>
         </div>
 
+        <!-- Section paiement Wave -->
         <div class="wave-section">
-            <p style="margin: 0; font-weight: bold; color: #004d66;">Frais Caution (Paiement Wave)</p>
-            <p style="font-size: 12px; color: #555; margin: 5px 0;">Cliquez ci-dessous pour payer via l'application Wave</p>
+            <p style="margin: 0; font-weight: bold; color: #004d66;">Étape 1 : Paiement des Frais (Wave)</p>
+            <p style="font-size: 12px; color: #555; margin: 5px 0;">Effectuez le transfert Wave puis validez l'inscription.</p>
             
-        
+            <a href="https://pay.wave.com/m/VOTRE_LIEN_WAVE_ICI" target="_blank" class="wave-btn">
+                Payer via Wave 📱
+            </a>
         </div>
 
-        <button type="submit">Valider l'inscription</button>
+        <p style="font-size: 12px; color: #666; text-align: center; margin-bottom: 10px;">
+            Étape 2 : Cliquez ci-dessous pour valider et envoyer votre fiche par WhatsApp.
+        </p>
+
+        <button type="submit">Valider et confirmer sur WhatsApp</button>
         
     </form>
 </div>
+
 <script>
-  document.getElementById('form-inscription').addEventListener('submit', async function(e) {
-    e.preventDefault(); // Empêche le rechargement immédiat de la page
+  // Mettez ici le numéro du bureau / amicale qui reçoit les inscriptions
+  const NUMERO_AMICALE = "221770000000"; 
+
+  document.getElementById('form-inscription').addEventListener('submit', function(e) {
+    e.preventDefault();
     
-    const btn = e.target.querySelector('button');
-    const originalText = btn.innerText;
-    btn.innerText = "Redirection vers PayTech...";
-    btn.disabled = true;
-
     // Récupération des données du formulaire
-    const formData = {
-      prenom: document.getElementById('prenom').value, // Vérifiez que vos <input> ont bien ces ID
-      nom: document.getElementById('nom').value
-    };
+    const prenom = document.getElementById('prenom').value;
+    const nom = document.getElementById('nom').value;
+    const dateNaissance = document.getElementById('date_naissance').value;
+    const telephone = document.getElementById('telephone').value; // Le numéro saisi
+    const residence = document.getElementById('residence').value;
 
-    try {
-      const response = await fetch('/api/paiement', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
+    // Construction du message WhatsApp avec le numéro de l'étudiant inclus
+    const message = `*DEMANDE DE VALIDATION D'INSCRIPTION*\n\n` +
+                    `👤 *Nom & Prénom :* ${prenom} ${nom}\n` +
+                    `📅 *Date de naissance :* ${dateNaissance}\n` +
+                    `📱 *Numéro WhatsApp Étudiant :* +221${telephone}\n` +
+                    `🏠 *Résidence :* ${residence}\n\n` +
+                    `✅ *Statut :* Paiement Wave effectué.\n` +
+                    `Merci de valider mon dossier d'intégration.`;
 
-      const data = await response.json();
+    // Lien de redirection vers WhatsApp
+    const whatsappUrl = `https://wa.me/${NUMERO_AMICALE}?text=${encodeURIComponent(message)}`;
 
-      if (data.redirect_url) {
-        // Redirige l'étudiant directement sur PayTech (Wave, Orange Money...)
-        window.location.href = data.redirect_url;
-      } else {
-        alert("Erreur : " + data.error);
-        btn.innerText = originalText;
-        btn.disabled = false;
-      }
-    } catch (error) {
-      alert("Impossible de joindre le service de paiement.");
-      btn.innerText = originalText;
-      btn.disabled = false;
-    }
+    // Redirection directe
+    window.location.href = whatsappUrl;
   });
 </script>
+
 </body>
 </html>
